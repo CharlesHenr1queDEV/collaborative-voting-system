@@ -2,12 +2,14 @@ package br.com.collaborativevotingsystem.service;
 
 import java.time.LocalDateTime;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.collaborativevotingsystem.builder.SectionVotingBuilder;
 import br.com.collaborativevotingsystem.model.SectionVoting;
 import br.com.collaborativevotingsystem.model.Shedule;
 import br.com.collaborativevotingsystem.repository.SectionVotingRepository;
+import br.com.collaborativevotingsystem.validation.ValidationShedule;
 
 @Service
 public class SectionVotingService {
@@ -16,16 +18,18 @@ public class SectionVotingService {
 	
 	private SectionVotingRepository sectionVotingRepository;
 	
-	public SectionVotingService(SheduleService sheduleService, SectionVotingRepository sectionVotingRepository) {
+	private MessageSource messageSource;
+	
+	public SectionVotingService(SheduleService sheduleService, SectionVotingRepository sectionVotingRepository, MessageSource messageSource) {
 		this.sheduleService = sheduleService;
 		this.sectionVotingRepository = sectionVotingRepository;
+		this.messageSource = messageSource;
 	}
 
 	public SectionVoting open(Long id, int votingDurationMinutes) throws Exception {
 		try {
 			Shedule shedule = this.sheduleService.findById(id);
-			//Fazer validação se existe uma section e se é possivel criar uma nova no lugar
-			
+	
 			return createSectionVoting(shedule, votingDurationMinutes);
 		} catch (Exception e) {
 			throw e;
@@ -44,8 +48,5 @@ public class SectionVotingService {
 		
 		return sectionVotingRepository.save(sectionVoting);
 	}
-
-	
-	
 
 }

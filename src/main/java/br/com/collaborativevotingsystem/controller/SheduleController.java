@@ -28,7 +28,7 @@ public class SheduleController {
 	public ResponseEntity<?> createShedule(@RequestBody SheduleDTO shaduleDTO){
 		try {
 			SheduleDTO shedule = sheduleService.createShedule(shaduleDTO);
-			return new ResponseEntity<>("Shedule criado com sucesso: " + shedule.getId(), HttpStatus.CREATED);
+			return new ResponseEntity<>("Shedule criado com sucesso, id: " + shedule.getId(), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -39,7 +39,6 @@ public class SheduleController {
 	public ResponseEntity<?> getResult(@PathVariable Long sheduleId){
 		try {
 			VotingResult votingResult = sheduleService.getResult(sheduleId);
-			
 			return new ResponseEntity<>(votingResult.toString(), HttpStatus.OK);
 		} catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -3,6 +3,7 @@ package br.com.collaborativevotingsystem.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.collaborativevotingsystem.dto.SheduleDTO;
@@ -12,33 +13,42 @@ import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
 import br.com.collaborativevotingsystem.model.Shedule;
 import br.com.collaborativevotingsystem.model.Vote;
 import br.com.collaborativevotingsystem.repository.SheduleRepository;
+import br.com.collaborativevotingsystem.validation.ValidationShedule;
+import br.com.collaborativevotingsystem.validation.VotingResultValidation;
 
 @Service
 public class SheduleService {
 
 	private SheduleRepository sheduleRepository;
+	
+	private MessageSource messageSource;
 
-	public SheduleService(SheduleRepository sheduleRepository) {
+	public SheduleService(SheduleRepository sheduleRepository, MessageSource messageSource) {
 		this.sheduleRepository = sheduleRepository;
+		this.messageSource = messageSource;
 	}
 
-	public SheduleDTO createShedule(SheduleDTO sheduleDTO) {
-		// Criar validação antes de iniciar esse processamento
+	public SheduleDTO createShedule(SheduleDTO sheduleDTO) throws Exception {
 		Shedule shedule = sheduleDTO.generateShedule();
+		
+		ValidationShedule validationShedule = new ValidationShedule(shedule, null, messageSource);
+		validationShedule.execute();
+
 		sheduleRepository.save(shedule);
 
-		return shedule.generateTransportObject();
+		return shedule.generateTransportObject();			
 	}
 
 	public Shedule findById(Long id) throws Exception {
-		Optional<Shedule> byUUID = sheduleRepository.findById(id);
-		return byUUID.orElseThrow(() -> new Exception("Shedule não encontrado para o UUID: " + id));
+		Optional<Shedule> sheduleOpt = sheduleRepository.findById(id);
+		return sheduleOpt.orElseThrow(() -> new Exception("Shedule não encontrado com o id: " + id));
 	}
 
 	public VotingResult getResult(Long sheduleId) throws Exception {
-		//Criar validações antes de processar essas partes aqui
-		//Não posso obter o resultado enquanto estiver em processo de votação
 		Shedule shedule = findById(sheduleId);
+		VotingResultValidation votingResultValidation = new VotingResultValidation(shedule, null, messageSource);
+		votingResultValidation.execute();
+		
 		List<Vote> votes = shedule.getSectionVoting().getVotes();
 		
 		return prepareVotingResult(votes);
