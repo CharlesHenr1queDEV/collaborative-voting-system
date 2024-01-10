@@ -9,17 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.OneToOne;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class SectionVoting implements Serializable {
 
 	private static final long serialVersionUID = 1763744151745671641L;
@@ -27,14 +21,78 @@ public class SectionVoting implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private LocalDateTime votingStartDate;
-	
+
 	private LocalDateTime votingEndDate;
-	
+
 	private int votingDurationMinutes;
+
+	@OneToOne
+	@JoinColumn(name = "shedule_id")
+	private Shedule shedule;
 
 	@OneToMany(mappedBy = "sectionVoting", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Vote> votes;
+
+	public SectionVoting(LocalDateTime votingStartDate, LocalDateTime votingEndDate, int votingDurationMinutes,
+			Shedule shedule) {
+		this.votingStartDate = votingStartDate;
+		this.votingEndDate = votingEndDate;
+		this.votingDurationMinutes = votingDurationMinutes;
+		this.shedule = shedule;
+	}
+
+	public SectionVoting() {
+
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getVotingStartDate() {
+		return votingStartDate;
+	}
+
+	public void setVotingStartDate(LocalDateTime votingStartDate) {
+		this.votingStartDate = votingStartDate;
+	}
+
+	public LocalDateTime getVotingEndDate() {
+		return votingEndDate;
+	}
+
+	public void setVotingEndDate(LocalDateTime votingEndDate) {
+		this.votingEndDate = votingEndDate;
+	}
+
+	public int getVotingDurationMinutes() {
+		return votingDurationMinutes;
+	}
+
+	public void setVotingDurationMinutes(int votingDurationMinutes) {
+		this.votingDurationMinutes = votingDurationMinutes;
+	}
+
+	public List<Vote> getVotes() {
+		return votes;
+	}
+
+	public void setVotes(List<Vote> votes) {
+		this.votes = votes;
+	}
+
+	public Shedule getShedule() {
+		return shedule;
+	}
+
+	public void setShedule(Shedule shedule) {
+		this.shedule = shedule;
+	}
 
 }

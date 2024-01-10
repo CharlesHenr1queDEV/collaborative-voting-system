@@ -3,6 +3,7 @@ package br.com.collaborativevotingsystem.model;
 import java.io.Serializable;
 
 import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,10 +21,45 @@ public class Vote implements Serializable{
 	private Long id;
 
 	private VoteChoiceEnum voteChoice;
-
+			
+	@Column(unique = true)
 	private String associateIdentifier;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "section_voting_id")
 	private SectionVoting sectionVoting;
+
+	public Vote(VoteChoiceEnum voteChoice, String associateIdentifier, SectionVoting sectionVoting) {
+		this.voteChoice = voteChoice;
+		this.associateIdentifier = associateIdentifier;
+		this.sectionVoting = sectionVoting;
+	}
+	
+	public Vote() {}
+
+	public VoteChoiceEnum getVoteChoice() {
+		return voteChoice;
+	}
+
+	public void setVoteChoice(VoteChoiceEnum voteChoice) {
+		this.voteChoice = voteChoice;
+	}
+
+	public String getAssociateIdentifier() {
+		return associateIdentifier;
+	}
+
+	public void setAssociateIdentifier(String associateIdentifier) {
+		this.associateIdentifier = associateIdentifier;
+	}
+
+	public SectionVoting getSectionVoting() {
+		return sectionVoting;
+	}
+
+	public void setSectionVoting(SectionVoting sectionVoting) {
+		this.sectionVoting = sectionVoting;
+	}
+	
+	
 }
