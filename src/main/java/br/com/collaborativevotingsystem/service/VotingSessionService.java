@@ -9,6 +9,7 @@ import br.com.collaborativevotingsystem.builder.VotingSessionBuilder;
 import br.com.collaborativevotingsystem.model.Shedule;
 import br.com.collaborativevotingsystem.model.VotingSession;
 import br.com.collaborativevotingsystem.repository.VotingSessionRepository;
+import br.com.collaborativevotingsystem.validation.VotingSessionValidation;
 
 @Service
 public class VotingSessionService {
@@ -28,8 +29,13 @@ public class VotingSessionService {
 	public VotingSession open(Long id, int votingDurationMinutes) throws Exception {
 		try {
 			Shedule shedule = this.sheduleService.findById(id);
-	
-			return createVotingSession(shedule, votingDurationMinutes);
+			VotingSession votingSession = createVotingSession(shedule, votingDurationMinutes);
+			
+			VotingSessionValidation votingSessionValidation = new VotingSessionValidation(votingSession, shedule, null, messageSource);
+			votingSessionValidation.execute();
+			
+			shedule.setVotingSession(votingSession);
+			return votingSessionRepository.save(votingSession);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -41,10 +47,12 @@ public class VotingSessionService {
 				.withVotingDurationMinutes(votingDurationMinutes)
 				.withShedule(shedule)
 				.build();
-		
-		shedule.setVotingSession(votingSession);
-		
-		return votingSessionRepository.save(votingSession);
+	
+		return votingSession;
+	}
+	
+	public boolean isAssociateVoted(String associateIdentifier, VotingSession votingSession) {
+		return votingSessionRepository.existsVotesByVotesAssociateIdentifierAndId(associateIdentifier, votingSession.getId());
 	}
 
 }

@@ -7,5 +7,7 @@ import br.com.collaborativevotingsystem.model.VotingSession;
 
 @Repository
 public interface VotingSessionRepository extends CrudRepository<VotingSession, Long> {
+   
+	boolean existsVotesByVotesAssociateIdentifierAndId(String associateIdentifier, Long votingSessionId);
 
 }
