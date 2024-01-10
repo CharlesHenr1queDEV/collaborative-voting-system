@@ -26,12 +26,12 @@ public class VoteService {
 		this.votingSessionService = votingSessionService;
 	}
 
-	public void vote(VoteDTO voteDTO, Long sheduleId) throws Exception {
+	public void vote(VoteDTO voteDTO, Long sheduleId, String language) throws Exception {
 		try {
 			Shedule shedule = this.sheduleService.findById(sheduleId);
 			voteDTO.setVotingSession(shedule.getVotingSession());
 			
-			VoteValidation validation = new VoteValidation(voteDTO.generateVote(), shedule, null, messageSource, votingSessionService);
+			VoteValidation validation = new VoteValidation(voteDTO.generateVote(), shedule, language, messageSource, votingSessionService);
 			validation.execute();
 			
 			voteRepository.save(voteDTO.generateVote());

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +23,9 @@ public class VotingSessionController {
 	}
 	
 	@PostMapping("/open")
-	public ResponseEntity<?> openVotingSession(@RequestParam Long id, @RequestParam(defaultValue = "1") int votingDurationMinutes){
+	public ResponseEntity<?> openVotingSession(@RequestParam Long scheduleId, @RequestParam(defaultValue = "1") int votingDurationMinutes,  @RequestHeader(name = "language", required = false) String language){
 		try {
-			VotingSession votingSessionCreated = votingSessionService.open(id, votingDurationMinutes);
+			VotingSession votingSessionCreated = votingSessionService.open(scheduleId, votingDurationMinutes, language);
 			String message = String.format("Sessão inicializada na pauta: %s , duração de: %s, Data de termino da votação: %s", votingSessionCreated.getShedule().getId(), votingSessionCreated.getVotingDurationMinutes(), votingSessionCreated.getVotingEndDate());
 			
 			return new ResponseEntity<>(message, HttpStatus.CREATED);

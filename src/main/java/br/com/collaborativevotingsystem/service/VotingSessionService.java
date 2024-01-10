@@ -26,12 +26,12 @@ public class VotingSessionService {
 		this.messageSource = messageSource;
 	}
 
-	public VotingSession open(Long id, int votingDurationMinutes) throws Exception {
+	public VotingSession open(Long id, int votingDurationMinutes, String language) throws Exception {
 		try {
 			Shedule shedule = this.sheduleService.findById(id);
 			VotingSession votingSession = createVotingSession(shedule, votingDurationMinutes);
 			
-			VotingSessionValidation votingSessionValidation = new VotingSessionValidation(votingSession, shedule, null, messageSource);
+			VotingSessionValidation votingSessionValidation = new VotingSessionValidation(votingSession, shedule, language, messageSource);
 			votingSessionValidation.execute();
 			
 			shedule.setVotingSession(votingSession);

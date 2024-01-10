@@ -28,10 +28,10 @@ public class SheduleService {
 		this.messageSource = messageSource;
 	}
 
-	public SheduleDTO createShedule(SheduleDTO sheduleDTO) throws Exception {
+	public SheduleDTO createShedule(SheduleDTO sheduleDTO, String language) throws Exception {
 		Shedule shedule = sheduleDTO.generateShedule();
 		
-		ValidationShedule validationShedule = new ValidationShedule(shedule, null, messageSource);
+		ValidationShedule validationShedule = new ValidationShedule(shedule, language, messageSource);
 		validationShedule.execute();
 
 		sheduleRepository.save(shedule);
@@ -44,9 +44,10 @@ public class SheduleService {
 		return sheduleOpt.orElseThrow(() -> new Exception("Shedule não encontrado com o id: " + id));
 	}
 
-	public VotingResult getResult(Long sheduleId) throws Exception {
+	public VotingResult getResult(Long sheduleId, String language) throws Exception {
 		Shedule shedule = findById(sheduleId);
-		VotingResultValidation votingResultValidation = new VotingResultValidation(shedule, null, messageSource);
+		
+		VotingResultValidation votingResultValidation = new VotingResultValidation(shedule, language, messageSource);
 		votingResultValidation.execute();
 		
 		List<Vote> votes = shedule.getVotingSession().getVotes();

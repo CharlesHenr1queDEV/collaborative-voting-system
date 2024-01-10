@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,10 +26,10 @@ public class SheduleController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createShedule(@RequestBody SheduleDTO shaduleDTO){
+	public ResponseEntity<?> createShedule(@RequestBody SheduleDTO shaduleDTO, @RequestHeader(name="language", required=false) String language){
 		try {
-			SheduleDTO shedule = sheduleService.createShedule(shaduleDTO);
-			return new ResponseEntity<>("Shedule criado com sucesso, id: " + shedule.getId(), HttpStatus.CREATED);
+			SheduleDTO shedule = sheduleService.createShedule(shaduleDTO, language);
+			return new ResponseEntity<>(shedule, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -36,10 +37,10 @@ public class SheduleController {
 	
 	
 	@GetMapping("/result/{sheduleId}")
-	public ResponseEntity<?> getResult(@PathVariable Long sheduleId){
+	public ResponseEntity<?> getResult(@PathVariable Long sheduleId, @RequestHeader(name="language", required=false) String language){
 		try {
-			VotingResult votingResult = sheduleService.getResult(sheduleId);
-			return new ResponseEntity<>(votingResult.toString(), HttpStatus.OK);
+			VotingResult votingResult = sheduleService.getResult(sheduleId, language);
+			return new ResponseEntity<>(votingResult, HttpStatus.OK);
 		} catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
