@@ -4,14 +4,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.collaborativevotingsystem.dto.VoteDTO;
-import br.com.collaborativevotingsystem.model.Shedule;
+import br.com.collaborativevotingsystem.model.Schedule;
 import br.com.collaborativevotingsystem.repository.VoteRepository;
 import br.com.collaborativevotingsystem.validation.VoteValidation;
 
 @Service
 public class VoteService {
 
-	private SheduleService sheduleService;
+	private ScheduleService scheduleService;
 
 	private VoteRepository voteRepository;
 	
@@ -19,19 +19,19 @@ public class VoteService {
 	
 	private VotingSessionService votingSessionService; 
 
-	public VoteService(SheduleService sheduleService, VoteRepository voteRepository, MessageSource messageSource, VotingSessionService votingSessionService) {
-		this.sheduleService = sheduleService;
+	public VoteService(ScheduleService scheduleService, VoteRepository voteRepository, MessageSource messageSource, VotingSessionService votingSessionService) {
+		this.scheduleService = scheduleService;
 		this.voteRepository = voteRepository;
 		this.messageSource = messageSource;
 		this.votingSessionService = votingSessionService;
 	}
 
-	public void vote(VoteDTO voteDTO, Long sheduleId, String language) throws Exception {
+	public void vote(VoteDTO voteDTO, Long scheduleId, String language) throws Exception {
 		try {
-			Shedule shedule = this.sheduleService.findById(sheduleId);
-			voteDTO.setVotingSession(shedule.getVotingSession());
+			Schedule schedule = this.scheduleService.findById(scheduleId);
+			voteDTO.setVotingSession(schedule.getVotingSession());
 			
-			VoteValidation validation = new VoteValidation(voteDTO.generateVote(), shedule, language, messageSource, votingSessionService);
+			VoteValidation validation = new VoteValidation(voteDTO.generateVote(), schedule, language, messageSource, votingSessionService);
 			validation.execute();
 			
 			voteRepository.save(voteDTO.generateVote());

@@ -26,7 +26,7 @@ public class VotingSessionController {
 	public ResponseEntity<?> openVotingSession(@RequestParam Long scheduleId, @RequestParam(defaultValue = "1") int votingDurationMinutes,  @RequestHeader(name = "language", required = false) String language){
 		try {
 			VotingSession votingSessionCreated = votingSessionService.open(scheduleId, votingDurationMinutes, language);
-			String message = String.format("Sessão inicializada na pauta: %s , duração de: %s, Data de termino da votação: %s", votingSessionCreated.getShedule().getId(), votingSessionCreated.getVotingDurationMinutes(), votingSessionCreated.getVotingEndDate());
+			String message = String.format("Sessão inicializada na pauta: %s , duração de: %s, Data de termino da votação: %s", votingSessionCreated.getSchedule().getId(), votingSessionCreated.getVotingDurationMinutes(), votingSessionCreated.getVotingEndDate());
 			
 			return new ResponseEntity<>(message, HttpStatus.CREATED);
 		} catch (Exception e) {

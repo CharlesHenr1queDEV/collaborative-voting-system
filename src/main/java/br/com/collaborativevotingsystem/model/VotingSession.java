@@ -29,18 +29,18 @@ public class VotingSession implements Serializable {
 	private int votingDurationMinutes;
 
 	@OneToOne
-	@JoinColumn(name = "shedule_id")
-	private Shedule shedule;
+	@JoinColumn(name = "schedule_id")
+	private Schedule schedule;
 
 	@OneToMany(mappedBy = "votingSession", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Vote> votes;
 
 	public VotingSession(LocalDateTime votingStartDate, LocalDateTime votingEndDate, int votingDurationMinutes,
-			Shedule shedule) {
+			Schedule schedule) {
 		this.votingStartDate = votingStartDate;
 		this.votingEndDate = votingEndDate;
 		this.votingDurationMinutes = votingDurationMinutes;
-		this.shedule = shedule;
+		this.schedule = schedule;
 	}
 
 	public VotingSession() {
@@ -87,12 +87,12 @@ public class VotingSession implements Serializable {
 		this.votes = votes;
 	}
 
-	public Shedule getShedule() {
-		return shedule;
+	public Schedule getSchedule() {
+		return schedule;
 	}
 
-	public void setShedule(Shedule shedule) {
-		this.shedule = shedule;
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
 
 }

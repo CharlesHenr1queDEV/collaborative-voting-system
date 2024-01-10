@@ -10,36 +10,35 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.collaborativevotingsystem.dto.SheduleDTO;
+import br.com.collaborativevotingsystem.dto.ScheduleDTO;
 import br.com.collaborativevotingsystem.dto.VotingResult;
-import br.com.collaborativevotingsystem.service.SheduleService;
-import jakarta.websocket.server.PathParam;
+import br.com.collaborativevotingsystem.service.ScheduleService;
 
 @RestController
-@RequestMapping("api/v1/shedule")
-public class SheduleController {
+@RequestMapping("api/v1/schedule")
+public class ScheduleController {
 	
-	private SheduleService sheduleService;
+	private ScheduleService scheduleService;
 	
-	public SheduleController(SheduleService sheduleService) {
-		this.sheduleService = sheduleService;
+	public ScheduleController(ScheduleService scheduleService) {
+		this.scheduleService = scheduleService;
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createShedule(@RequestBody SheduleDTO shaduleDTO, @RequestHeader(name="language", required=false) String language){
+	public ResponseEntity<?> createSchedule(@RequestBody ScheduleDTO shaduleDTO, @RequestHeader(name="language", required=false) String language){
 		try {
-			SheduleDTO shedule = sheduleService.createShedule(shaduleDTO, language);
-			return new ResponseEntity<>(shedule, HttpStatus.CREATED);
+			ScheduleDTO schedule = scheduleService.createSchedule(shaduleDTO, language);
+			return new ResponseEntity<>(schedule, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 	}
 	
 	
-	@GetMapping("/result/{sheduleId}")
-	public ResponseEntity<?> getResult(@PathVariable Long sheduleId, @RequestHeader(name="language", required=false) String language){
+	@GetMapping("/result/{scheduleId}")
+	public ResponseEntity<?> getResult(@PathVariable Long scheduleId, @RequestHeader(name="language", required=false) String language){
 		try {
-			VotingResult votingResult = sheduleService.getResult(sheduleId, language);
+			VotingResult votingResult = scheduleService.getResult(scheduleId, language);
 			return new ResponseEntity<>(votingResult, HttpStatus.OK);
 		} catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

@@ -6,51 +6,51 @@ import java.util.Optional;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import br.com.collaborativevotingsystem.dto.SheduleDTO;
+import br.com.collaborativevotingsystem.dto.ScheduleDTO;
 import br.com.collaborativevotingsystem.dto.VotingResult;
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
-import br.com.collaborativevotingsystem.model.Shedule;
+import br.com.collaborativevotingsystem.model.Schedule;
 import br.com.collaborativevotingsystem.model.Vote;
-import br.com.collaborativevotingsystem.repository.SheduleRepository;
-import br.com.collaborativevotingsystem.validation.ValidationShedule;
+import br.com.collaborativevotingsystem.repository.ScheduleRepository;
+import br.com.collaborativevotingsystem.validation.ValidationSchedule;
 import br.com.collaborativevotingsystem.validation.VotingResultValidation;
 
 @Service
-public class SheduleService {
+public class ScheduleService {
 
-	private SheduleRepository sheduleRepository;
+	private ScheduleRepository scheduleRepository;
 	
 	private MessageSource messageSource;
 
-	public SheduleService(SheduleRepository sheduleRepository, MessageSource messageSource) {
-		this.sheduleRepository = sheduleRepository;
+	public ScheduleService(ScheduleRepository scheduleRepository, MessageSource messageSource) {
+		this.scheduleRepository = scheduleRepository;
 		this.messageSource = messageSource;
 	}
 
-	public SheduleDTO createShedule(SheduleDTO sheduleDTO, String language) throws Exception {
-		Shedule shedule = sheduleDTO.generateShedule();
+	public ScheduleDTO createSchedule(ScheduleDTO scheduleDTO, String language) throws Exception {
+		Schedule schedule = scheduleDTO.generateSchedule();
 		
-		ValidationShedule validationShedule = new ValidationShedule(shedule, language, messageSource);
-		validationShedule.execute();
+		ValidationSchedule validationSchedule = new ValidationSchedule(schedule, language, messageSource);
+		validationSchedule.execute();
 
-		sheduleRepository.save(shedule);
+		scheduleRepository.save(schedule);
 
-		return shedule.generateTransportObject();			
+		return schedule.generateTransportObject();			
 	}
 
-	public Shedule findById(Long id) throws Exception {
-		Optional<Shedule> sheduleOpt = sheduleRepository.findById(id);
-		return sheduleOpt.orElseThrow(() -> new Exception("Shedule não encontrado com o id: " + id));
+	public Schedule findById(Long id) throws Exception {
+		Optional<Schedule> scheduleOpt = scheduleRepository.findById(id);
+		return scheduleOpt.orElseThrow(() -> new Exception("Schedule não encontrado com o id: " + id));
 	}
 
-	public VotingResult getResult(Long sheduleId, String language) throws Exception {
-		Shedule shedule = findById(sheduleId);
+	public VotingResult getResult(Long scheduleId, String language) throws Exception {
+		Schedule schedule = findById(scheduleId);
 		
-		VotingResultValidation votingResultValidation = new VotingResultValidation(shedule, language, messageSource);
+		VotingResultValidation votingResultValidation = new VotingResultValidation(schedule, language, messageSource);
 		votingResultValidation.execute();
 		
-		List<Vote> votes = shedule.getVotingSession().getVotes();
+		List<Vote> votes = schedule.getVotingSession().getVotes();
 		
 		return prepareVotingResult(votes);
 	}

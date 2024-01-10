@@ -24,9 +24,9 @@ public class VoteController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> vote(@RequestParam Long sheduleId, @RequestBody VoteDTO voteDTO, @RequestHeader(name = "language", required = false) String language) {
+	public ResponseEntity<?> vote(@RequestParam(required=true) Long scheduleId, @RequestBody VoteDTO voteDTO, @RequestHeader(name = "language", required = false) String language) {
 		try {
-			voteService.vote(voteDTO, sheduleId, language);
+			voteService.vote(voteDTO, scheduleId, language);
 			return new ResponseEntity<>("Voto computado com sucesso", HttpStatus.CREATED);
         }catch (VotingSessionNotExistException e) {
         	return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

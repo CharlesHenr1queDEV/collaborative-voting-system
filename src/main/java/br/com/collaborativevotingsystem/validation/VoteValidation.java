@@ -8,7 +8,7 @@ import org.springframework.context.MessageSource;
 import br.com.collaborativevotingsystem.exception.VoteAlreadyComputedAssociateException;
 import br.com.collaborativevotingsystem.exception.VotingSessionNotExistException;
 import br.com.collaborativevotingsystem.exception.VotingSessionTimeHasExpiredException;
-import br.com.collaborativevotingsystem.model.Shedule;
+import br.com.collaborativevotingsystem.model.Schedule;
 import br.com.collaborativevotingsystem.model.Vote;
 import br.com.collaborativevotingsystem.model.VotingSession;
 import br.com.collaborativevotingsystem.service.VotingSessionService;
@@ -18,7 +18,7 @@ public class VoteValidation implements ValidationInterface {
 
 	private Vote vote;
 	
-	private Shedule shedule;
+	private Schedule schedule;
 
 	private Locale locale;
 
@@ -26,20 +26,20 @@ public class VoteValidation implements ValidationInterface {
 
 	private VotingSessionService votingSessionService;
 
-	public VoteValidation(Vote vote, Shedule shedule, String language, MessageSource messageSource,
+	public VoteValidation(Vote vote, Schedule schedule, String language, MessageSource messageSource,
 			VotingSessionService votingSessionService) {
 		this.vote = vote;
 		this.locale = UtilsSystem.getLocaleByLanguage(language);
 		this.messageSource = messageSource;
 		this.votingSessionService = votingSessionService;
-		this.shedule = shedule;
+		this.schedule = schedule;
 	}
 
 	@Override
 	public void execute() throws Exception {
 
 		if (vote.getVotingSession() == null) {
-			String message = messageSource.getMessage(VotingSessionNotExistException.MESSAGE, new Object[] {shedule.getTitle()}, locale);
+			String message = messageSource.getMessage(VotingSessionNotExistException.MESSAGE, new Object[] {schedule.getTitle()}, locale);
 			throw new VotingSessionNotExistException(message);
 		}
 
@@ -48,7 +48,7 @@ public class VoteValidation implements ValidationInterface {
 
 		if (isAssociateVoted) {
 			String message = messageSource.getMessage(VoteAlreadyComputedAssociateException.MESSAGE,
-					new Object[] { shedule.getTitle(), vote.getAssociateIdentifier() }, locale);
+					new Object[] { schedule.getTitle(), vote.getAssociateIdentifier() }, locale);
 			throw new VoteAlreadyComputedAssociateException(message);
 		}
 

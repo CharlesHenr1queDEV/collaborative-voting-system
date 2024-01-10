@@ -2,7 +2,7 @@ package br.com.collaborativevotingsystem.model;
 
 import java.io.Serializable;
 
-import br.com.collaborativevotingsystem.dto.SheduleDTO;
+import br.com.collaborativevotingsystem.dto.ScheduleDTO;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Shedule implements Serializable {
+public class Schedule implements Serializable {
 	
 	private static final long serialVersionUID = -3620125786415817467L;
 	
@@ -28,7 +28,7 @@ public class Shedule implements Serializable {
 	@JoinColumn(name = "voting_session_id", referencedColumnName = "id")
 	private VotingSession votingSession;
 
-	public Shedule() {}
+	public Schedule() {}
 
 	public Long getId() {
 		return id;
@@ -62,11 +62,11 @@ public class Shedule implements Serializable {
 		this.votingSession = votingSession;
 	}
 
-	public SheduleDTO generateTransportObject() {
-		SheduleDTO sheduleDTO = new SheduleDTO();
-		sheduleDTO.setId(id);
-		sheduleDTO.setTitle(title);
-		sheduleDTO.setDescription(description);
-		return sheduleDTO;
+	public ScheduleDTO generateTransportObject() {
+		ScheduleDTO scheduleDTO = new ScheduleDTO();
+		scheduleDTO.setId(id);
+		scheduleDTO.setTitle(title);
+		scheduleDTO.setDescription(description);
+		return scheduleDTO;
 	}
 }

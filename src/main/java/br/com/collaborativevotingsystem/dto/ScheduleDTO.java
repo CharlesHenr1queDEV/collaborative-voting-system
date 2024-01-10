@@ -1,8 +1,8 @@
 package br.com.collaborativevotingsystem.dto;
 
-import br.com.collaborativevotingsystem.model.Shedule;
+import br.com.collaborativevotingsystem.model.Schedule;
 
-public class SheduleDTO {
+public class ScheduleDTO {
 
 	private Long id;
 	
@@ -34,12 +34,12 @@ public class SheduleDTO {
 		this.description = description;
 	}
 
-	public Shedule generateShedule() {
-		Shedule shedule = new Shedule();
-		shedule.setId(id);
-		shedule.setTitle(title);
-		shedule.setDescription(description);
+	public Schedule generateSchedule() {
+		Schedule schedule = new Schedule();
+		schedule.setId(id);
+		schedule.setTitle(title);
+		schedule.setDescription(description);
 		
-		return shedule;
+		return schedule;
 	}
 }
