@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 
-import br.com.collaborativevotingsystem.exception.SectionVotingNotExistException;
+import br.com.collaborativevotingsystem.exception.VotingSessionNotExistException;
 import br.com.collaborativevotingsystem.exception.VotingInProgressException;
 import br.com.collaborativevotingsystem.model.Shedule;
 import br.com.collaborativevotingsystem.utils.UtilsSystem;
@@ -27,12 +27,12 @@ public class VotingResultValidation implements ValidationInterface{
 	@Override
 	public void execute() throws Exception {	
 		
-		if(shedule.getSectionVoting() == null) {
-			String message = messageSource.getMessage(SectionVotingNotExistException.MESSAGE, new Object[] {shedule.getTitle()}, locale);
-			throw new SectionVotingNotExistException(message);
+		if(shedule.getVotingSession() == null) {
+			String message = messageSource.getMessage(VotingSessionNotExistException.MESSAGE, new Object[] {shedule.getTitle()}, locale);
+			throw new VotingSessionNotExistException(message);
 		}
 		
-		if(LocalDateTime.now().isBefore(shedule.getSectionVoting().getVotingEndDate())) {
+		if(LocalDateTime.now().isBefore(shedule.getVotingSession().getVotingEndDate())) {
 			String message = messageSource.getMessage(VotingInProgressException.MESSAGE, null, locale);
 			throw new VotingInProgressException(message);
 		}

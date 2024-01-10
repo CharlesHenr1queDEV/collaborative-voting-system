@@ -22,7 +22,7 @@ public class VoteService {
 		try {
 			Shedule shedule = this.sheduleService.findById(sheduleId);
 			// Criar uma classe de validação para ter varios tipos de validação e lançar exeções personalizadas
-			voteDTO.setSectionVoting(shedule.getSectionVoting());
+			voteDTO.setVotingSession(shedule.getVotingSession());
 
 			voteRepository.save(voteDTO.generateVote());
 		} catch (Exception e) {

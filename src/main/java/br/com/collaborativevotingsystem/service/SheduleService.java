@@ -49,7 +49,7 @@ public class SheduleService {
 		VotingResultValidation votingResultValidation = new VotingResultValidation(shedule, null, messageSource);
 		votingResultValidation.execute();
 		
-		List<Vote> votes = shedule.getSectionVoting().getVotes();
+		List<Vote> votes = shedule.getVotingSession().getVotes();
 		
 		return prepareVotingResult(votes);
 	}

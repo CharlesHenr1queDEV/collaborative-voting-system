@@ -1,7 +1,7 @@
 package br.com.collaborativevotingsystem.dto;
 
 import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
-import br.com.collaborativevotingsystem.model.SectionVoting;
+import br.com.collaborativevotingsystem.model.VotingSession;
 import br.com.collaborativevotingsystem.model.Vote;
 
 public class VoteDTO {
@@ -10,7 +10,7 @@ public class VoteDTO {
 
 	private String associateIdentifier;
 
-	private SectionVoting sectionVoting;
+	private VotingSession votingSession;
 
 	public String getVoteChoice() {
 		return voteChoice;
@@ -28,18 +28,18 @@ public class VoteDTO {
 		this.associateIdentifier = associateIdentifier;
 	}
 
-	public SectionVoting getSectionVoting() {
-		return sectionVoting;
+	public VotingSession getVotingSession() {
+		return votingSession;
 	}
 
-	public void setSectionVoting(SectionVoting sectionVoting) {
-		this.sectionVoting = sectionVoting;
+	public void setVotingSession(VotingSession votingSession) {
+		this.votingSession = votingSession;
 	}
 
 	public Vote generateVote() {
 		Vote vote = new Vote();
 		vote.setAssociateIdentifier(associateIdentifier);
-		vote.setSectionVoting(sectionVoting);
+		vote.setVotingSession(votingSession);
 		vote.setVoteChoice(VoteChoiceEnum.findByValue(voteChoice));
 
 		return vote;

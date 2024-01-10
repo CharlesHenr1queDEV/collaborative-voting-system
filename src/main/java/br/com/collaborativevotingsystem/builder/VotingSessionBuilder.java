@@ -2,10 +2,10 @@ package br.com.collaborativevotingsystem.builder;
 
 import java.time.LocalDateTime;
 
-import br.com.collaborativevotingsystem.model.SectionVoting;
+import br.com.collaborativevotingsystem.model.VotingSession;
 import br.com.collaborativevotingsystem.model.Shedule;
 
-public class SectionVotingBuilder {
+public class VotingSessionBuilder {
 
 	private LocalDateTime votingStartDate;
 
@@ -15,25 +15,25 @@ public class SectionVotingBuilder {
 
 	private Shedule shedule;
 
-	public SectionVotingBuilder withVotingStartDate(LocalDateTime votingStartDate) {
+	public VotingSessionBuilder withVotingStartDate(LocalDateTime votingStartDate) {
 		this.votingStartDate = votingStartDate;
 		return this;
 	}
 
-	public SectionVotingBuilder withVotingDurationMinutes(int votingDurationMinutes) {
+	public VotingSessionBuilder withVotingDurationMinutes(int votingDurationMinutes) {
 		this.votingDurationMinutes = votingDurationMinutes;
 		return this;
 	}
 
-	public SectionVotingBuilder withShedule(Shedule shedule) {
+	public VotingSessionBuilder withShedule(Shedule shedule) {
 		this.shedule = shedule;
 		return this;
 	}
 
-	public SectionVoting build() {
+	public VotingSession build() {
 		// Configura a data de término com base na data de início e na duração
 		this.votingEndDate = this.votingStartDate.plusMinutes(votingDurationMinutes);
-		return new SectionVoting(votingStartDate, votingEndDate, votingDurationMinutes, shedule);
+		return new VotingSession(votingStartDate, votingEndDate, votingDurationMinutes, shedule);
 	}
 
 }

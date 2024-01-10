@@ -25,8 +25,8 @@ public class Shedule implements Serializable {
 	private String description;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "section_voting_id", referencedColumnName = "id")
-	private SectionVoting sectionVoting;
+	@JoinColumn(name = "voting_session_id", referencedColumnName = "id")
+	private VotingSession votingSession;
 
 	public Shedule() {}
 
@@ -54,12 +54,12 @@ public class Shedule implements Serializable {
 		this.description = description;
 	}
 	
-	public SectionVoting getSectionVoting() {
-		return sectionVoting;
+	public VotingSession getVotingSession() {
+		return votingSession;
 	}
 
-	public void setSectionVoting(SectionVoting sectionVoting) {
-		this.sectionVoting = sectionVoting;
+	public void setVotingSession(VotingSession votingSession) {
+		this.votingSession = votingSession;
 	}
 
 	public SheduleDTO generateTransportObject() {

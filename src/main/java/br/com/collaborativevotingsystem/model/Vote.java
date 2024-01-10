@@ -26,13 +26,13 @@ public class Vote implements Serializable{
 	private String associateIdentifier;
 	
 	@ManyToOne
-	@JoinColumn(name = "section_voting_id")
-	private SectionVoting sectionVoting;
+	@JoinColumn(name = "voting_session_id")
+	private VotingSession votingSession;
 
-	public Vote(VoteChoiceEnum voteChoice, String associateIdentifier, SectionVoting sectionVoting) {
+	public Vote(VoteChoiceEnum voteChoice, String associateIdentifier, VotingSession votingSession) {
 		this.voteChoice = voteChoice;
 		this.associateIdentifier = associateIdentifier;
-		this.sectionVoting = sectionVoting;
+		this.votingSession = votingSession;
 	}
 	
 	public Vote() {}
@@ -53,12 +53,12 @@ public class Vote implements Serializable{
 		this.associateIdentifier = associateIdentifier;
 	}
 
-	public SectionVoting getSectionVoting() {
-		return sectionVoting;
+	public VotingSession getVotingSession() {
+		return votingSession;
 	}
 
-	public void setSectionVoting(SectionVoting sectionVoting) {
-		this.sectionVoting = sectionVoting;
+	public void setVotingSession(VotingSession votingSession) {
+		this.votingSession = votingSession;
 	}
 	
 	

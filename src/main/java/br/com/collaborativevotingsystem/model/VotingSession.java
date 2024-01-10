@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class SectionVoting implements Serializable {
+public class VotingSession implements Serializable {
 
 	private static final long serialVersionUID = 1763744151745671641L;
 
@@ -32,10 +32,10 @@ public class SectionVoting implements Serializable {
 	@JoinColumn(name = "shedule_id")
 	private Shedule shedule;
 
-	@OneToMany(mappedBy = "sectionVoting", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "votingSession", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Vote> votes;
 
-	public SectionVoting(LocalDateTime votingStartDate, LocalDateTime votingEndDate, int votingDurationMinutes,
+	public VotingSession(LocalDateTime votingStartDate, LocalDateTime votingEndDate, int votingDurationMinutes,
 			Shedule shedule) {
 		this.votingStartDate = votingStartDate;
 		this.votingEndDate = votingEndDate;
@@ -43,7 +43,7 @@ public class SectionVoting implements Serializable {
 		this.shedule = shedule;
 	}
 
-	public SectionVoting() {
+	public VotingSession() {
 
 	}
 
