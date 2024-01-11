@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.collaborativevotingsystem.dto.ScheduleDTO;
-import br.com.collaborativevotingsystem.dto.VotingResult;
+import br.com.collaborativevotingsystem.dto.VotingResultDTO;
 import br.com.collaborativevotingsystem.service.ScheduleService;
 
 @RestController
@@ -38,7 +38,7 @@ public class ScheduleController {
 	@GetMapping("/result/{scheduleId}")
 	public ResponseEntity<?> getResult(@PathVariable Long scheduleId, @RequestHeader(name="language", required=false) String language){
 		try {
-			VotingResult votingResult = scheduleService.getResult(scheduleId, language);
+			VotingResultDTO votingResult = scheduleService.getResult(scheduleId, language);
 			return new ResponseEntity<>(votingResult, HttpStatus.OK);
 		} catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

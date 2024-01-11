@@ -2,7 +2,7 @@ package br.com.collaborativevotingsystem.dto;
 
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 
-public class VotingResult {
+public class VotingResultDTO {
 
 	private int totalVotes;
 	
@@ -11,6 +11,12 @@ public class VotingResult {
 	private int numberOfVotesNo;
 	
 	private ResultVotingEnum finalVoteResult;
+	
+	public VotingResultDTO(long totalVotes, long numberOfVotesYes, long numberOfVotesNo) {
+        this.totalVotes = (int) totalVotes;
+        this.numberOfVotesYes = (int) numberOfVotesYes;
+        this.numberOfVotesNo = (int) numberOfVotesNo;
+    }
 
 	public int getTotalVotes() {
 		return totalVotes;
@@ -43,6 +49,12 @@ public class VotingResult {
 	public void setFinalVoteResult(ResultVotingEnum finalVoteResult) {
 		this.finalVoteResult = finalVoteResult;
 	}
+	
+	public void calculateFinalVoteResult() {
+		  this.finalVoteResult = (numberOfVotesYes > numberOfVotesNo) ? ResultVotingEnum.APPROVED :
+              (numberOfVotesYes < numberOfVotesNo) ? ResultVotingEnum.NOT_APPROVED :
+              ResultVotingEnum.DRAW;
+    }
 
 	@Override
 	public String toString() {

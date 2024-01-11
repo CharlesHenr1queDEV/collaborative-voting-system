@@ -7,7 +7,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.collaborativevotingsystem.dto.ScheduleDTO;
-import br.com.collaborativevotingsystem.dto.VotingResult;
+import br.com.collaborativevotingsystem.dto.VotingResultDTO;
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
 import br.com.collaborativevotingsystem.model.Schedule;
@@ -44,39 +44,42 @@ public class ScheduleService {
 		return scheduleOpt.orElseThrow(() -> new Exception("Schedule não encontrado com o id: " + id));
 	}
 
-	public VotingResult getResult(Long scheduleId, String language) throws Exception {
+	public VotingResultDTO getResult(Long scheduleId, String language) throws Exception {
 		Schedule schedule = findById(scheduleId);
+		
 		
 		VotingResultValidation votingResultValidation = new VotingResultValidation(schedule, language, messageSource);
 		votingResultValidation.execute();
 		
-		List<Vote> votes = schedule.getVotingSession().getVotes();
+		VotingResultDTO voteResult = scheduleRepository.getVoteResult(schedule);
+		voteResult.calculateFinalVoteResult();
+//		List<Vote> votes = schedule.getVotingSession().getVotes();
 		
-		return prepareVotingResult(votes);
+		return voteResult;
 	}
-	
-	private VotingResult prepareVotingResult(List<Vote> votes) {
-		
-		int voteTotal = votes.size();
-		int numberOfVotesNo = (int) votes.stream().filter(vote -> vote.getVoteChoice().equals(VoteChoiceEnum.NO)).count();
-		int numberOfVotesYes = (int) votes.stream().filter(vote -> vote.getVoteChoice().equals(VoteChoiceEnum.YES)).count();
-
-		VotingResult votingResult = new VotingResult();
-		votingResult.setTotalVotes(voteTotal);
-		votingResult.setNumberOfVotesNo(numberOfVotesNo);
-		votingResult.setNumberOfVotesYes(numberOfVotesYes);
-		votingResult.setFinalVoteResult(getFinalVotingResult(numberOfVotesYes, numberOfVotesNo));
-		
-		return votingResult;
-	}
-	
-	private ResultVotingEnum getFinalVotingResult(int numberOfVotesYes, int numberOfVotesNo) {
-	    if (numberOfVotesYes > numberOfVotesNo) {
-	        return ResultVotingEnum.YES;
-	    } else if (numberOfVotesNo > numberOfVotesYes) {
-	        return ResultVotingEnum.NO;
-	    } else {
-	        return ResultVotingEnum.DRAW;
-	    }
-	}
+//	
+//	private VotingResultDTO prepareVotingResult(List<Vote> votes) {
+//		
+//		int voteTotal = votes.size();
+//		int numberOfVotesNo = (int) votes.stream().filter(vote -> vote.getVoteChoice().equals(VoteChoiceEnum.NO)).count();
+//		int numberOfVotesYes = (int) votes.stream().filter(vote -> vote.getVoteChoice().equals(VoteChoiceEnum.YES)).count();
+//
+//		VotingResultDTO votingResult = new VotingResultDTO();
+//		votingResult.setTotalVotes(voteTotal);
+//		votingResult.setNumberOfVotesNo(numberOfVotesNo);
+//		votingResult.setNumberOfVotesYes(numberOfVotesYes);
+//		votingResult.setFinalVoteResult(getFinalVotingResult(numberOfVotesYes, numberOfVotesNo));
+//		
+//		return votingResult;
+//	}
+//	
+//	private ResultVotingEnum getFinalVotingResult(int numberOfVotesYes, int numberOfVotesNo) {
+//	    if (numberOfVotesYes > numberOfVotesNo) {
+//	        return ResultVotingEnum.APROVED;
+//	    } else if (numberOfVotesNo > numberOfVotesYes) {
+//	        return ResultVotingEnum.NOT_APROVED;
+//	    } else {
+//	        return ResultVotingEnum.DRAW;
+//	    }
+//	}
 }
