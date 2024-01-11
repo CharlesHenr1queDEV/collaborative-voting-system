@@ -12,6 +12,10 @@ public class VotingResultDTO {
 	
 	private ResultVotingEnum finalVoteResult;
 	
+	public VotingResultDTO() {
+
+	}
+
 	public VotingResultDTO(long totalVotes, long numberOfVotesYes, long numberOfVotesNo) {
         this.totalVotes = (int) totalVotes;
         this.numberOfVotesYes = (int) numberOfVotesYes;

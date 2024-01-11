@@ -1,6 +1,5 @@
 package br.com.collaborativevotingsystem.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.context.MessageSource;
@@ -9,9 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.collaborativevotingsystem.dto.ScheduleDTO;
 import br.com.collaborativevotingsystem.dto.VotingResultDTO;
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
-import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
 import br.com.collaborativevotingsystem.model.Schedule;
-import br.com.collaborativevotingsystem.model.Vote;
 import br.com.collaborativevotingsystem.repository.ScheduleRepository;
 import br.com.collaborativevotingsystem.validation.ValidationSchedule;
 import br.com.collaborativevotingsystem.validation.VotingResultValidation;
@@ -42,6 +39,11 @@ public class ScheduleService {
 	public Schedule findById(Long id) throws Exception {
 		Optional<Schedule> scheduleOpt = scheduleRepository.findById(id);
 		return scheduleOpt.orElseThrow(() -> new Exception("Schedule não encontrado com o id: " + id));
+	}
+	
+	public void updateSheduleResultVoting(Schedule schedule, ResultVotingEnum result) {
+		schedule.setResultVotingEnum(result);
+		scheduleRepository.save(schedule);
 	}
 
 	public VotingResultDTO getResult(Long scheduleId, String language) throws Exception {

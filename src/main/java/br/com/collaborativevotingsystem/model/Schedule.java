@@ -3,6 +3,7 @@ package br.com.collaborativevotingsystem.model;
 import java.io.Serializable;
 
 import br.com.collaborativevotingsystem.dto.ScheduleDTO;
+import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,8 @@ public class Schedule implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "voting_session_id", referencedColumnName = "id")
 	private VotingSession votingSession;
+	
+	private ResultVotingEnum resultVotingEnum;
 
 	public Schedule() {}
 
@@ -61,12 +64,21 @@ public class Schedule implements Serializable {
 	public void setVotingSession(VotingSession votingSession) {
 		this.votingSession = votingSession;
 	}
+	
+	public ResultVotingEnum getResultVotingEnum() {
+		return resultVotingEnum;
+	}
+
+	public void setResultVotingEnum(ResultVotingEnum resultVotingEnum) {
+		this.resultVotingEnum = resultVotingEnum;
+	}
 
 	public ScheduleDTO generateTransportObject() {
 		ScheduleDTO scheduleDTO = new ScheduleDTO();
 		scheduleDTO.setId(id);
 		scheduleDTO.setTitle(title);
 		scheduleDTO.setDescription(description);
+		scheduleDTO.setResultVotingEnum(resultVotingEnum);
 		return scheduleDTO;
 	}
 }

@@ -29,13 +29,14 @@ public class Vote implements Serializable{
 	@JoinColumn(name = "voting_session_id")
 	private VotingSession votingSession;
 
+	public Vote() {}
+
 	public Vote(VoteChoiceEnum voteChoice, String associateIdentifier, VotingSession votingSession) {
 		this.voteChoice = voteChoice;
 		this.associateIdentifier = associateIdentifier;
 		this.votingSession = votingSession;
 	}
 	
-	public Vote() {}
 
 	public VoteChoiceEnum getVoteChoice() {
 		return voteChoice;

@@ -9,6 +9,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import br.com.collaborativevotingsystem.builder.VotingSessionBuilder;
+import br.com.collaborativevotingsystem.dto.VotingResultDTO;
+import br.com.collaborativevotingsystem.enums.RabbitQueueEnum;
+import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import br.com.collaborativevotingsystem.model.Schedule;
 import br.com.collaborativevotingsystem.model.VotingSession;
 import br.com.collaborativevotingsystem.repository.VotingSessionRepository;
@@ -23,13 +26,17 @@ public class VotingSessionService {
 	
 	private MessageSource messageSource;
 	
+	private RabbitMessageSenderService rabbitMessageSenderService;
+	
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 	
-	public VotingSessionService(ScheduleService scheduleService, VotingSessionRepository votingSessionRepository, MessageSource messageSource) {
+	public VotingSessionService(ScheduleService scheduleService, VotingSessionRepository votingSessionRepository, MessageSource messageSource,
+			RabbitMessageSenderService rabbitMessageSenderService) {
 		this.scheduleService = scheduleService;
 		this.votingSessionRepository = votingSessionRepository;
 		this.messageSource = messageSource;
+		this.rabbitMessageSenderService = rabbitMessageSenderService;
 	}
 
 	public VotingSession open(Long id, int votingDurationMinutes, String language) throws Exception {
@@ -37,13 +44,18 @@ public class VotingSessionService {
 			Schedule schedule = this.scheduleService.findById(id);
 			VotingSession votingSession = prepareVotingSession(schedule, votingDurationMinutes);
 			
+			//Fazendo a validação para criação da nova sessão
 			VotingSessionValidation votingSessionValidation = new VotingSessionValidation(votingSession, schedule, language, messageSource);
 			votingSessionValidation.execute();
 			schedule.setVotingSession(votingSession);
 			
 			votingSessionRepository.save(votingSession);
 			
-			scheduler.schedule(this::sendVotingResult, votingSession.getVotingDurationMinutes(), TimeUnit.MINUTES);
+			//Atualizando status do resultado da votação
+			scheduleService.updateSheduleResultVoting(schedule, ResultVotingEnum.PENDING);
+			
+			//Agendar um processamento para o final do processamento da votação
+			scheduler.schedule(() -> sendVotingResult(schedule, language), votingSession.getVotingDurationMinutes(), TimeUnit.MINUTES);
 			
 			return votingSession;
 		} catch (Exception e) {
@@ -65,8 +77,13 @@ public class VotingSessionService {
 		return votingSessionRepository.existsVotesByVotesAssociateIdentifierAndId(associateIdentifier, votingSession.getId());
 	}
 	
-	private void sendVotingResult() {
-		System.out.println("Resultado da votação depois de 1 min");
+	private void sendVotingResult(Schedule schedule, String language){
+		try {
+			VotingResultDTO result = scheduleService.getResult(schedule.getId(), language);
+			rabbitMessageSenderService.sendMessage(RabbitQueueEnum.RESULT.getRabbitKey(), result);
+			scheduleService.updateSheduleResultVoting(schedule, result.getFinalVoteResult());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
 }

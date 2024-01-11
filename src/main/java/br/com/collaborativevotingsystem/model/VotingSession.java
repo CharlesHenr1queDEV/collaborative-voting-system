@@ -2,6 +2,7 @@ package br.com.collaborativevotingsystem.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -32,8 +33,12 @@ public class VotingSession implements Serializable {
 	@JoinColumn(name = "schedule_id")
 	private Schedule schedule;
 
-	@OneToMany(mappedBy = "votingSession", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Vote> votes;
+	@OneToMany(mappedBy = "votingSession", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<Vote> votes = new ArrayList<>();
+
+	public VotingSession() {
+		this.votes = new ArrayList<>();
+	}
 
 	public VotingSession(LocalDateTime votingStartDate, LocalDateTime votingEndDate, int votingDurationMinutes,
 			Schedule schedule) {
@@ -43,9 +48,6 @@ public class VotingSession implements Serializable {
 		this.schedule = schedule;
 	}
 
-	public VotingSession() {
-
-	}
 
 	public Long getId() {
 		return id;
