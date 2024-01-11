@@ -6,6 +6,8 @@ import br.com.collaborativevotingsystem.dto.ScheduleDTO;
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +31,7 @@ public class Schedule implements Serializable {
 	@JoinColumn(name = "voting_session_id", referencedColumnName = "id")
 	private VotingSession votingSession;
 	
+	@Enumerated(EnumType.STRING)
 	private ResultVotingEnum resultVotingEnum;
 
 	public Schedule() {}

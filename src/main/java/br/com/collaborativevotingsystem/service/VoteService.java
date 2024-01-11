@@ -1,5 +1,7 @@
 package br.com.collaborativevotingsystem.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import br.com.collaborativevotingsystem.validation.VoteValidation;
 
 @Service
 public class VoteService {
+	
+	private final Logger logger = LogManager.getLogger(VoteService.class);
 
 	private ScheduleService scheduleService;
 
@@ -28,16 +32,19 @@ public class VoteService {
 
 	public void vote(VoteDTO voteDTO, Long scheduleId, String language) throws Exception {
 		try {
+			logger.info("[VOTE] Iniciando processo de votação");
 			Schedule schedule = this.scheduleService.findById(scheduleId);
 			voteDTO.setVotingSession(schedule.getVotingSession());
 			
+			logger.info("[VOTE] Validando voto");
 			VoteValidation validation = new VoteValidation(voteDTO.generateVote(), schedule, language, messageSource, votingSessionService);
 			validation.execute();
 			
 			voteRepository.save(voteDTO.generateVote());
+			logger.info("[VOTE] Voto salvo com sucesso!");
 		} catch (Exception e) {
+			logger.error("[VOTE]" + e.getMessage());
 			throw e;
 		}
 	}
-
 }

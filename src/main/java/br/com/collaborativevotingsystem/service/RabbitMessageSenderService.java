@@ -1,11 +1,18 @@
 package br.com.collaborativevotingsystem.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import br.com.collaborativevotingsystem.dto.VotingResultDTO;
+import br.com.collaborativevotingsystem.enums.RabbitQueueEnum;
+
 @Service
 public class RabbitMessageSenderService {
+	
+	private final Logger logger = LogManager.getLogger(ScheduleService.class);
 
 	private RabbitTemplate rabbitTemplate;
 
@@ -16,10 +23,12 @@ public class RabbitMessageSenderService {
 		this.directExchange = directExchange;
 	}
 
-	public void sendMessage(String routingKey, Object message) throws Exception {
+	public void sendMessage(RabbitQueueEnum result, Object message) throws Exception {
 		try {
-			rabbitTemplate.convertAndSend(directExchange.getName(), routingKey, message);
+			logger.info("[MESSAGE_SERVICE] Enviando mensagem para a fila " + result.getRabbitQueueName());
+			rabbitTemplate.convertAndSend(directExchange.getName(), result.getRabbitKey(), message);
 		} catch (Exception e) {
+			logger.info("[MESSAGE_SERVICE] " + e.getMessage());
 			throw e;
 		}
 	}

@@ -1,7 +1,10 @@
 package br.com.collaborativevotingsystem.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,29 @@ public class ScheduleController {
 		this.scheduleService = scheduleService;
 	}
 	
+	@GetMapping
+	public ResponseEntity<?> getAllSchedule(){
+		try {
+			List<ScheduleDTO> listScheduleDTO = scheduleService.findAll();
+			if(listScheduleDTO.isEmpty()) {
+				return new ResponseEntity<>(listScheduleDTO, HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(listScheduleDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getScheduleById(@PathVariable Long id, @RequestHeader(name="language", required=false) String language){
+		try {
+			ScheduleDTO scheduleDTO = scheduleService.findById(id).generateTransportObject();
+			return new ResponseEntity<>(scheduleDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+	}
+	
 	@PostMapping("/create")
 	public ResponseEntity<?> createSchedule(@RequestBody ScheduleDTO shaduleDTO, @RequestHeader(name="language", required=false) String language){
 		try {
@@ -34,6 +60,15 @@ public class ScheduleController {
         }
 	}
 	
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
+        try {
+        	scheduleService.deleteScheduleById(id);
+        	return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}   
+    }
 	
 	@GetMapping("/result/{scheduleId}")
 	public ResponseEntity<?> getResult(@PathVariable Long scheduleId, @RequestHeader(name="language", required=false) String language){
