@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.collaborativevotingsystem.dto.VoteDTO;
 import br.com.collaborativevotingsystem.model.Schedule;
+import br.com.collaborativevotingsystem.model.Vote;
 import br.com.collaborativevotingsystem.repository.VoteRepository;
 import br.com.collaborativevotingsystem.validation.VoteValidation;
 
@@ -30,18 +31,19 @@ public class VoteService {
 		this.votingSessionService = votingSessionService;
 	}
 
-	public void vote(VoteDTO voteDTO, Long scheduleId, String language) throws Exception {
+	public VoteDTO vote(VoteDTO voteDTO, String language) throws Exception {
 		try {
 			logger.info("[VOTE] Iniciando processo de votação");
-			Schedule schedule = this.scheduleService.findById(scheduleId);
+			Schedule schedule = this.scheduleService.findById(voteDTO.getScheduleId());
 			voteDTO.setVotingSession(schedule.getVotingSession());
 			
 			logger.info("[VOTE] Validando voto");
 			VoteValidation validation = new VoteValidation(voteDTO.generateVote(), schedule, language, messageSource, votingSessionService);
 			validation.execute();
 			
-			voteRepository.save(voteDTO.generateVote());
+			Vote save = voteRepository.save(voteDTO.generateVote());
 			logger.info("[VOTE] Voto salvo com sucesso!");
+			return save.generateTransportObject();
 		} catch (Exception e) {
 			logger.error("[VOTE]" + e.getMessage());
 			throw e;

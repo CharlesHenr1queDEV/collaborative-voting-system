@@ -1,15 +1,20 @@
 package br.com.collaborativevotingsystem.dto;
 
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class VotingResultDTO {
 
+	@Schema(description = "Quantidade total de votos")
 	private int totalVotes;
 	
+	@Schema(description = "Quantidade de votos a favor")
 	private int numberOfVotesYes;
 	
+	@Schema(description = "Quantidade de votos contra")
 	private int numberOfVotesNo;
 	
+	@Schema(description = "Resultado final")
 	private ResultVotingEnum finalVoteResult;
 	
 	public VotingResultDTO() {

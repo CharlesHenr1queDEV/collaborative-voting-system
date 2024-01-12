@@ -74,7 +74,7 @@ public class VotingSessionService {
 	
 	private void sendVotingResult(Schedule schedule, String language){
 		try {
-			logger.info("[VOTING_SESSION] Iniciando processo para processar resultado da votação");
+			logger.info("[VOTING_SESSION] Iniciando processo para obter o resultado da votação");
 			VotingResultDTO result = scheduleService.getResult(schedule.getId(), language);
 			
 			rabbitMessageSenderService.sendMessage(RabbitQueueEnum.RESULT, result);

@@ -2,15 +2,23 @@ package br.com.collaborativevotingsystem.dto;
 
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import br.com.collaborativevotingsystem.model.Schedule;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 
 public class ScheduleDTO {
 
+    @Schema(description = "ID da pauta", readOnly = true)
 	private Long id;
 
+    @Schema(description = "Título da pauta")
+    @NotBlank
 	private String title;
 
+    @Schema(description = "Descrição da pauta")
+    @NotBlank
 	private String description;
 
+    @Schema(description = "Status da votação", readOnly = true)
 	private ResultVotingEnum resultVotingEnum;
 
 	public Long getId() {

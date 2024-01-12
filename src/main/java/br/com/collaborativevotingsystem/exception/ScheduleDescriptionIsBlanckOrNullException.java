@@ -1,7 +1,5 @@
 package br.com.collaborativevotingsystem.exception;
 
-import br.com.collaborativevotingsystem.CollaborativeVotingSystemException;
-
 public class ScheduleDescriptionIsBlanckOrNullException extends CollaborativeVotingSystemException{
 	
 	private static final long serialVersionUID = 3677093408621388494L;

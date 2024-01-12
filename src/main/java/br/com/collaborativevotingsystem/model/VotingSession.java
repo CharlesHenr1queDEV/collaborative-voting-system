@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.collaborativevotingsystem.dto.VotingSessionDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,10 +25,13 @@ public class VotingSession implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Schema(description = "Data de inicio da sessão de votação")
 	private LocalDateTime votingStartDate;
 
+	@Schema(description = "Data do fim da sessão de votação")
 	private LocalDateTime votingEndDate;
 
+	@Schema(description = "Quantidade de tempo em minutos, que a sessão vai ficar aberta")
 	private int votingDurationMinutes;
 
 	@OneToOne
@@ -47,7 +52,6 @@ public class VotingSession implements Serializable {
 		this.votingDurationMinutes = votingDurationMinutes;
 		this.schedule = schedule;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -95,6 +99,16 @@ public class VotingSession implements Serializable {
 
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
+	}
+	
+	public VotingSessionDTO generateTransportObject() {
+		VotingSessionDTO votingSessionDTO = new VotingSessionDTO();
+		votingSessionDTO.setSchedule(schedule.generateTransportObject());
+		votingSessionDTO.setVotingDurationMinutes(votingDurationMinutes);
+		votingSessionDTO.setVotingEndDate(votingEndDate);
+		votingSessionDTO.setVotingStartDate(votingStartDate);
+		
+		return votingSessionDTO;
 	}
 
 }

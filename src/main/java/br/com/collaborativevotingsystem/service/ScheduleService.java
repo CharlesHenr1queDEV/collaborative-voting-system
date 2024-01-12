@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.collaborativevotingsystem.dto.ScheduleDTO;
 import br.com.collaborativevotingsystem.dto.VotingResultDTO;
 import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
+import br.com.collaborativevotingsystem.exception.CollaborativeVotingSystemException;
 import br.com.collaborativevotingsystem.model.Schedule;
 import br.com.collaborativevotingsystem.repository.ScheduleRepository;
 import br.com.collaborativevotingsystem.validation.ValidationSchedule;
@@ -36,7 +37,7 @@ public class ScheduleService {
 		logger.info("[SCHEDULE] Buscando schedule por id: " + id);
 		
 		Optional<Schedule> scheduleOpt = scheduleRepository.findById(id);
-		return scheduleOpt.orElseThrow(() -> new Exception("Schedule não encontrado com o id: " + id));
+		return scheduleOpt.orElseThrow(() -> new CollaborativeVotingSystemException("Schedule não encontrado com o id: " + id));
 	}
 	
 	public List<ScheduleDTO> findAll() throws Exception {

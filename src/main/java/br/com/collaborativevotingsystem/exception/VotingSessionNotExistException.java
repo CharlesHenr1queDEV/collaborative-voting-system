@@ -1,7 +1,5 @@
 package br.com.collaborativevotingsystem.exception;
 
-import br.com.collaborativevotingsystem.CollaborativeVotingSystemException;
-
 public class VotingSessionNotExistException extends CollaborativeVotingSystemException {
 
 	private static final long serialVersionUID = -1043026999008142851L;
