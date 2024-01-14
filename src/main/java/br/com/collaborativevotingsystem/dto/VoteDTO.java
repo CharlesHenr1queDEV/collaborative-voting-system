@@ -1,5 +1,7 @@
 package br.com.collaborativevotingsystem.dto;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
@@ -7,20 +9,21 @@ import br.com.collaborativevotingsystem.model.Vote;
 import br.com.collaborativevotingsystem.model.VotingSession;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class VoteDTO {
 
-	@NotBlank
 	private Long scheduleId;
 	
-    @Schema(description = "Opção de voto")
-    @Pattern(regexp = "^(sim|não)$", message = "VoteChoice deve ser 'sim' ou 'não'")
-    @NotBlank
+    @Schema(description = "Opção de voto: Opções ('sim' ou 'não')")
+    @Pattern(regexp = "(?i)^(sim|não)$", message = "Escolha de voto inválido: o valor deve ser 'sim' ou 'não'")
+    @NotBlank(message= "Escolha de voto inválido: Não pode ser vazio ou nulo")
 	private String voteChoice;
 
     @Schema(description = "Identificador do associado (CPF)")
-    @NotBlank
+    @NotBlank(message = "Identificador do associado inválido: não pode ser vazio ou nulo")
+    @CPF(message = "Identificador do associado inválido: CPF inválido")
 	private String associateIdentifier;
 
     @Schema(description = "Sessão de votação")

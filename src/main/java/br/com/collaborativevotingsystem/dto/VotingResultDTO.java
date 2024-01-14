@@ -4,6 +4,9 @@ import br.com.collaborativevotingsystem.enums.ResultVotingEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class VotingResultDTO {
+	
+	@Schema(description = "Id da agenda")
+	private Long scheduleId;
 
 	@Schema(description = "Quantidade total de votos")
 	private int totalVotes;
@@ -21,10 +24,11 @@ public class VotingResultDTO {
 
 	}
 
-	public VotingResultDTO(long totalVotes, long numberOfVotesYes, long numberOfVotesNo) {
+	public VotingResultDTO(long totalVotes, long numberOfVotesYes, long numberOfVotesNo, long sheduleId) {
         this.totalVotes = (int) totalVotes;
         this.numberOfVotesYes = (int) numberOfVotesYes;
         this.numberOfVotesNo = (int) numberOfVotesNo;
+        this.scheduleId = sheduleId;
     }
 
 	public int getTotalVotes() {
@@ -59,6 +63,15 @@ public class VotingResultDTO {
 		this.finalVoteResult = finalVoteResult;
 	}
 	
+	
+	public Long getScheduleId() {
+		return scheduleId;
+	}
+
+	public void setScheduleId(Long scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+
 	public void calculateFinalVoteResult() {
 		  this.finalVoteResult = (numberOfVotesYes > numberOfVotesNo) ? ResultVotingEnum.APPROVED :
               (numberOfVotesYes < numberOfVotesNo) ? ResultVotingEnum.NOT_APPROVED :

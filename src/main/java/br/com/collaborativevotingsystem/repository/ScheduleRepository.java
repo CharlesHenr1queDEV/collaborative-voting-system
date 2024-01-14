@@ -12,7 +12,9 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
 	@Query("SELECT new br.com.collaborativevotingsystem.dto.VotingResultDTO(" + " COUNT(v), "
 			+ " COUNT(CASE WHEN v.voteChoice = 1 THEN 1 END), " 
-			+ " COUNT(CASE WHEN v.voteChoice = 0 THEN 1 END) " + ") "
+			+ " COUNT(CASE WHEN v.voteChoice = 0 THEN 1 END), "
+			+ " v.votingSession.schedule.id "
+			+ ") "
 			+ " FROM Vote v " + "WHERE v.votingSession.schedule = :schedule")
 	VotingResultDTO getVoteResult(@Param("schedule") Schedule schedule);
 

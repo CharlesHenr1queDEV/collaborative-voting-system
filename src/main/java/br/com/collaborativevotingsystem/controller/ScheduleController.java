@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/v1/schedule")
@@ -96,19 +98,7 @@ public class ScheduleController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@Operation(summary = "Deletar uma pauta", description = "Deletar uma pauta a partir de um id")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
-        try {
-        	scheduleService.deleteScheduleById(id);
-        	return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-		}   
-    }
-	
-	
+		
 	@Operation(summary = "Buscar status da pauta", description = "Busca da pauta a informação se a pauta foi aprovada, não aprovada, empate e etc.")
 	@ApiResponses(value = {
 		    @ApiResponse(responseCode = "201", description = "Resultado retornado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
@@ -116,7 +106,7 @@ public class ScheduleController {
 		    @ApiResponse(responseCode = "500", description = "Erro interno no servidor", content = @Content),
 		    
 		})
-	@GetMapping("/result/{scheduleId}")
+	@GetMapping("/status/{scheduleId}")
 	public ResponseEntity<?> getScheduleStatusVoting(@PathVariable Long scheduleId){
 		try {
 			ScheduleDTO scheduleDTO = scheduleService.findById(scheduleId).generateTransportObject();
@@ -128,7 +118,7 @@ public class ScheduleController {
         }
 	}
 	
-	@Operation(summary = "Buscar resultado detalhado", description = "Consulta realizada para extrair informaçoes mais completas sobre a votação como quantidade total de votos, votos positivos e etc.")
+	@Operation(summary = "Buscar resultado detalhado", description = "Consulta realizada para extrair informações mais completas sobre a votação como quantidade total de votos, votos positivos e etc.")
 	@ApiResponses(value = {
 		    @ApiResponse(responseCode = "201", description = "Resultado retornado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = VotingResultDTO.class))),
 		    @ApiResponse(responseCode = "400", description = "Problema durante o processamento de validação", content = @Content),
@@ -142,7 +132,6 @@ public class ScheduleController {
                     @ExampleObject(name = "Opção pt_br", value = "br")
                 }) @RequestHeader(name="language", required=false) String language){
 		try {
-			Schedule sh = new Schedule();
 			VotingResultDTO votingResult = scheduleService.getResult(scheduleId, language);
 			return new ResponseEntity<>(votingResult, HttpStatus.OK);
 		} catch (CollaborativeVotingSystemException e) {

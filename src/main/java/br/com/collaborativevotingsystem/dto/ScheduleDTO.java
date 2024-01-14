@@ -11,11 +11,9 @@ public class ScheduleDTO {
 	private Long id;
 
     @Schema(description = "Título da pauta")
-    @NotBlank
 	private String title;
 
     @Schema(description = "Descrição da pauta")
-    @NotBlank
 	private String description;
 
     @Schema(description = "Status da votação", readOnly = true)

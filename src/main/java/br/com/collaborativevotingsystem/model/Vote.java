@@ -12,8 +12,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(
+	    uniqueConstraints = @UniqueConstraint(columnNames = {"associate_identifier", "voting_session_id"})
+	)
 public class Vote implements Serializable{
 	
 	private static final long serialVersionUID = -8139421705377472950L;
@@ -26,7 +31,6 @@ public class Vote implements Serializable{
 	@Schema(description = "Opção de voto")
 	private VoteChoiceEnum voteChoice;
 			
-	@Column(unique = true)
 	@Schema(description = "Identificador do associado (CPF)")
 	private String associateIdentifier;
 	
@@ -69,8 +73,9 @@ public class Vote implements Serializable{
 	
 	public VoteDTO generateTransportObject() {
 		VoteDTO voteDTO = new VoteDTO();
+		voteDTO.setScheduleId(votingSession.getSchedule() != null ? votingSession.getSchedule().getId() : null);
 		voteDTO.setAssociateIdentifier(associateIdentifier);
-		voteDTO.setVoteChoice(associateIdentifier);
+		voteDTO.setVoteChoice(voteChoice.getValue());
 		voteDTO.setVotingSession(votingSession);
 		
 		return voteDTO;

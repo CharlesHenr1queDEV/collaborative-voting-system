@@ -16,7 +16,7 @@ public class UtilsSystem {
 		if(!StringUtils.isBlank(language) && (language.equalsIgnoreCase(LANGUAGE_PT_BR) || language.equalsIgnoreCase(LANGUAGE_EN))) {
 			locale = new Locale(language);				
 		}else {
-			locale = new Locale("br");
+			locale = new Locale(LANGUAGE_PT_BR);
 		}
 		return locale;
 	}
@@ -29,4 +29,6 @@ public class UtilsSystem {
 
 		return formattedStart + " até " + formattedEnd;
 	}
+	
+	
 }
