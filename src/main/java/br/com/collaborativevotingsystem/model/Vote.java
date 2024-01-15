@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import br.com.collaborativevotingsystem.dto.VoteDTO;
 import br.com.collaborativevotingsystem.enums.VoteChoiceEnum;
+import io.micrometer.common.util.StringUtils;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -60,7 +60,11 @@ public class Vote implements Serializable{
 	}
 
 	public void setAssociateIdentifier(String associateIdentifier) {
-		this.associateIdentifier = associateIdentifier;
+		if(!StringUtils.isBlank(associateIdentifier)) {
+			this.associateIdentifier = associateIdentifier.replaceAll("[.\\-]", "");
+		}else {
+			this.associateIdentifier = associateIdentifier;			
+		}
 	}
 
 	public VotingSession getVotingSession() {
