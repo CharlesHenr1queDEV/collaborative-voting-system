@@ -82,7 +82,7 @@ Sou um projeto que foi criado para gerenciar pautas e suas sessões de votaçõe
 
 ### Uso
 1. Acesse a documentação do swagger para obter detalhes sobre a API
-    http://localhost:8080/swagger-ui/index.html
+    - http://localhost:8080/swagger-ui/index.html
 
 ### Features
 Gerenciar pautas, iniciar sessões de votação, liberar a votação para diversos associados e obter o resultado final dessas votações para saber se uma pauta foi ou não aprovada. 
