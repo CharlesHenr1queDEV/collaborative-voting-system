@@ -78,16 +78,12 @@ Sou um projeto que foi criado para gerenciar pautas e suas sessões de votaçõe
     docker-compose up 
     ```
     - A imagem docker já está no docker hub aberta, com isso nesse arquivo já tem toda a configuração para execução do projeto
-3. Acessar a documentação da API no swagger
-    - http://localhost:8080/swagger-ui/index.html
-
 
 
 ### Uso
 1. Acesse a documentação do swagger para obter detalhes sobre a API
     http://localhost:8080/swagger-ui/index.html
-2. Veja a documentação do projeto para entender mais sobre
-  [Rota para a documentação local]()
+
 ### Features
 Gerenciar pautas, iniciar sessões de votação, liberar a votação para diversos associados e obter o resultado final dessas votações para saber se uma pauta foi ou não aprovada. 
 
