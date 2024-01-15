@@ -6,11 +6,6 @@ Olá, eu sou um projeto desenvolvido para fins de um desafio técnico, e ao logo
 
 Sou um projeto que foi criado para gerenciar pautas e suas sessões de votações. Meu objetivo é que você consiga criar uma pauta, iniciar uma sessão de votação com um tempo de duração, que você vai determinar, e partir dai, associados poderem votar. Além disso vai ser possível visualizar os resultados das votações de forma normal ou detalhada
 
-# Equipe de desenvolvedores
-
-* Charles Henrique  - [Linkedin](https://www.linkedin.com/in/charles-henrique-5b432a143/)
-
-
 ## Começando
 
 ### Requisitos
@@ -203,4 +198,7 @@ Example Obj:
     - Explicação: Para versionar a API da minha aplicação, eu adotei a estratégia de versionamento semântico, utilizando um número de versão no formato "MAJOR.MINOR.PATCH". A abordagem semântica ajuda a transmitir informações claras sobre as mudanças na API.
 
 
+# Equipe de desenvolvedores
+
+* Charles Henrique  - [Linkedin](https://www.linkedin.com/in/charles-henrique-5b432a143/)
  
