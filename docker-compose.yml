@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+#Database config
+  mysql:
+    image: mysql:8.0.33-oracle
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: collaborative_voting_system
+      MYSQL_ROOT_PASSWORD: BHU*nji9
+      MYSQL_USER: test
+      MYSQL_PASSWORD: BHU*nji9
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+#Application Config
+  collaborative-system:
+    image: charleshenriquedev/collaborative.voting.system:1.0
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/collaborative_voting_system?autoReconnect=true&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: BHU*nji9
+      SPRING_RABBITMQ_HOST: rabbitmq
+
+#RabbitMQ Config      
+  rabbit:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    environment:
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit channel_max 0"
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+volumes:
+  mysql_data:

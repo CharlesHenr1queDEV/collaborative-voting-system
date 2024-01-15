@@ -3,7 +3,7 @@ package br.com.collaborativevotingsystem;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication()
 public class CollaborativeVotingSystemApplication {
 
 	public static void main(String[] args) {

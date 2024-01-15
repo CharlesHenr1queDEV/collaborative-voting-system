@@ -19,4 +19,14 @@ public enum VoteChoiceEnum {
 		throw new IllegalArgumentException("Valor inválido para VoteChoiceEnum: " + value);
 	}
 
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	
+
 }

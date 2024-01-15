@@ -5,21 +5,21 @@ import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 
-import br.com.collaborativevotingsystem.exception.SectionVotingNotExistException;
+import br.com.collaborativevotingsystem.exception.VotingSessionNotExistException;
 import br.com.collaborativevotingsystem.exception.VotingInProgressException;
-import br.com.collaborativevotingsystem.model.Shedule;
+import br.com.collaborativevotingsystem.model.Schedule;
 import br.com.collaborativevotingsystem.utils.UtilsSystem;
 
 public class VotingResultValidation implements ValidationInterface{
 
-	private Shedule shedule;
+	private Schedule schedule;
 
 	private Locale locale;
 
 	private MessageSource messageSource;
 
-	public VotingResultValidation(Shedule shedule, String language, MessageSource messageSource) {
-		this.shedule = shedule;
+	public VotingResultValidation(Schedule schedule, String language, MessageSource messageSource) {
+		this.schedule = schedule;
 		this.locale = UtilsSystem.getLocaleByLanguage(language);
 		this.messageSource = messageSource;
 	}
@@ -27,12 +27,12 @@ public class VotingResultValidation implements ValidationInterface{
 	@Override
 	public void execute() throws Exception {	
 		
-		if(shedule.getSectionVoting() == null) {
-			String message = messageSource.getMessage(SectionVotingNotExistException.MESSAGE, new Object[] {shedule.getTitle()}, locale);
-			throw new SectionVotingNotExistException(message);
+		if(schedule.getVotingSession() == null) {
+			String message = messageSource.getMessage(VotingSessionNotExistException.MESSAGE, new Object[] {schedule.getTitle()}, locale);
+			throw new VotingSessionNotExistException(message);
 		}
 		
-		if(LocalDateTime.now().isBefore(shedule.getSectionVoting().getVotingEndDate())) {
+		if(LocalDateTime.now().isBefore(schedule.getVotingSession().getVotingEndDate())) {
 			String message = messageSource.getMessage(VotingInProgressException.MESSAGE, null, locale);
 			throw new VotingInProgressException(message);
 		}

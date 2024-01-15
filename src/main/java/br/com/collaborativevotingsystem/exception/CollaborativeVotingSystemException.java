@@ -1,4 +1,4 @@
-package br.com.collaborativevotingsystem;
+package br.com.collaborativevotingsystem.exception;
 
 public class CollaborativeVotingSystemException extends RuntimeException {
 
@@ -10,7 +10,7 @@ public class CollaborativeVotingSystemException extends RuntimeException {
 		super();
 	}
 
-	protected CollaborativeVotingSystemException(final String message, Object... args) {
+	public CollaborativeVotingSystemException(final String message, Object... args) {
 		super(message);
 		this.args = args;
 	}
