@@ -26,7 +26,7 @@ Sou um projeto que foi criado para gerenciar pautas e suas sessões de votaçõe
 
 1. Pegar o repositório do git e extrair em uma pasta local
      ```bash
-    git clone :example
+    git clone https://github.com/CharlesHenr1queDEV/collaborative-voting-system.git
     ```
 2. Navegar até a pasta 
     ```bash
@@ -54,7 +54,7 @@ Sou um projeto que foi criado para gerenciar pautas e suas sessões de votaçõe
 
 1. Pegar o repositório do git e extrair em uma pasta local
      ```bash
-    git clone :example
+    git clone https://github.com/CharlesHenr1queDEV/collaborative-voting-system.git
     ```
 2. Navegar até a pasta 
     ```bash
@@ -76,8 +76,8 @@ Sou um projeto que foi criado para gerenciar pautas e suas sessões de votaçõe
 
 ##### 3) Utilizando somente Docker compose
 
-1. Baixar o arquivo docker-compose
-   [Download: docker-compose]()
+1. Baixar o arquivo docker-compose ou copiar o conteúdo
+   [Link: docker-compose](https://github.com/CharlesHenr1queDEV/technical-challenge-dbc/blob/main/docker-compose.yml)
 2. Executar o arquivo
     ```bash
     docker-compose up 
