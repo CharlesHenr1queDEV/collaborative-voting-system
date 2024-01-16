@@ -11,7 +11,7 @@ Sou um projeto que foi criado para gerenciar pautas e suas sessões de votaçõe
 ### Requisitos
 
 - Java 17
-- Maven: 3.8.2 +
+- Maven: 3.8.5 +
 - Sua IDE favorita (IntelliJ IDEA, Sts, etc.)
 - Docker e Docke compose
 
